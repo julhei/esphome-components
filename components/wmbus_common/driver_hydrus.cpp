@@ -132,7 +132,7 @@ namespace
             FieldMatcher::build()
             .set(MeasurementType::Instantaneous)
             .set(VIFRange::Volume)
-            .set(StorageNr(3))
+            .set(StorageNr(3), StorageNr(8))
             );
 
         addNumericFieldWithExtractor(
@@ -144,7 +144,7 @@ namespace
             FieldMatcher::build()
             .set(MeasurementType::Instantaneous)
             .set(VIFRange::DateTime)
-            .set(StorageNr(3))
+            .set(StorageNr(3), StorageNr(8))
             );
 
         addNumericFieldWithExtractor(
