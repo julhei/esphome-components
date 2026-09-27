@@ -132,9 +132,27 @@ optional<std::string> Meter::get_string_field(std::string field_name) {
   if (field_name == "timestamp_zulu")
     return this->meter->datetimeOfUpdateRobot();
 
+  // Normal string/text fields
   auto field_info = this->meter->findFieldInfo(field_name, Quantity::Text);
   if (field_info)
     return this->meter->getStringValue(field_info);
+
+  // Point-in-time fields, e.g. target_datetime
+  std::string name;
+  Unit unit;
+  extractUnit(field_name, &name, &unit);
+
+  if (isQuantity(unit, Quantity::PointInTime)) {
+    auto point_in_time_field =
+        this->meter->findFieldInfo(name, Quantity::PointInTime);
+
+    if (point_in_time_field) {
+      auto value = this->meter->getNumericValue(point_in_time_field, unit);
+
+      if (!std::isnan(value))
+        return valueToString(value, unit);
+    }
+  }
 
   return {};
 }
